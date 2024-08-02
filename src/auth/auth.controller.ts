@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { SignupDto } from './dto/signin-user.dto';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { JwtAuthGuard } from './auth.guard';
+import { UpdatePasswordDto } from './dto/updatepassword.dto';
 
 
 
@@ -36,6 +37,15 @@ export class AuthController {
           token: null
         }
     }
+
+    @Patch('update')
+    @UseGuards(JwtAuthGuard)
+    async updateUser(@Req() req: Request, @Body() updatePasswordDto: UpdatePasswordDto) {
+      const userId = (req as any).user.id;
+      await this.authService.updateUser(userId, updatePasswordDto);
+      return { message: 'Password updated successfully' };
+    }
+
 
 
 

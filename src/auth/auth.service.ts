@@ -5,6 +5,7 @@ import * as bcrypt from "bcryptjs"
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignupDto } from './dto/signin-user.dto';
 import { Note, User } from '@prisma/client';
+import { UpdatePasswordDto } from './dto/updatepassword.dto';
 
 
 type IUser = Omit<User, 'password'> & {
@@ -62,14 +63,37 @@ const salt = 10
         }),
       };
     }
-    async me(user: IUser){
+
+  async me(user: IUser){
       return {user}
   }
 
-  //   async me(){
-  //     return 'signup'
-  // } 
+  async updateUser(userId: string, updatePasswordDto: UpdatePasswordDto): Promise<void> {
+    const { currentPassword, newPassword } = updatePasswordDto;
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!passwordMatch) {
+      throw new BadRequestException('Current password is incorrect.');
+    }
+
+    const salt = 10;
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: passwordHash },
+    });
   }
+}
+
+
   
     
         
