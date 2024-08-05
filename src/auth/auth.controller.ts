@@ -46,7 +46,4 @@ export class AuthController {
       return { message: 'Password updated successfully' };
     }
 
-
-
-
 }

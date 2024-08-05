@@ -14,4 +14,6 @@ export class SignupDto{
     @IsNotEmpty({message:'password is required'})
     @MinLength(8, {message: 'password must be atleast 8 characters'})
    password:string 
+
+
 }

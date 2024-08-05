@@ -2,15 +2,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcryptjs"
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { SignupDto } from './dto/signin-user.dto';
-import { Note, User } from '@prisma/client';
+import { IUser } from './interfaces/user.interface';
 import { UpdatePasswordDto } from './dto/updatepassword.dto';
 
 
-type IUser = Omit<User, 'password'> & {
-  notes: Note
-}
+
 @Injectable()
 export class AuthService {
     constructor(private prisma: PrismaService, private jwt: JwtService){}
@@ -20,7 +18,7 @@ export class AuthService {
             where: {username : user.username}
         }) 
         if(existingUser){
-            throw new BadRequestException(`user with username ${user.username} already exist`)
+            throw new BadRequestException(`User with username '${user.username}' already exist.`)
         }
 const salt = 10
     const passwordHash = await bcrypt.hash(user.password, salt)
