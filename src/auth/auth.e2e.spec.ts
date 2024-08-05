@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from '../app.module'; // Adjust the path as needed
+import { AppModule } from '../app.module'; 
 import { PrismaService } from '../prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
@@ -46,7 +46,6 @@ describe('AuthController (e2e)', () => {
       .send(signupDto())
       .expect(201)
       .catch(err => {
-        console.error('Error response:', err.response.body);
         throw err;
       });
 
