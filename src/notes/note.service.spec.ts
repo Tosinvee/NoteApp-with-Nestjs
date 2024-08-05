@@ -9,7 +9,7 @@ describe('NotesService', () => {
   let notesService: NotesService;
   let prismaService: PrismaService;
 
-  const fixedDate = new Date('2024-08-04T16:00:00Z'); // Fixed date for consistency
+  const fixedDate = new Date('2024-08-04T16:00:00Z'); 
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
