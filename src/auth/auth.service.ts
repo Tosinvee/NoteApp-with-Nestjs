@@ -89,7 +89,20 @@ const salt = 10
       data: { password: passwordHash },
     });
   }
+
+  async deleteUser(userId: string): Promise<void>{
+    const user = await this.prisma.user.findUnique({where:{id: userId}})
+
+    if(!user){
+      throw new BadRequestException('User nor found')
+    }
+    await this.prisma.user.delete({
+      where: {id : userId}
+    })
+  }
 }
+
+
 
 
   

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, HttpCode, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { SignupDto } from './dto/signin-user.dto';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
@@ -45,5 +45,13 @@ export class AuthController {
       await this.authService.updateUser(userId, updatePasswordDto);
       return { message: 'Password updated successfully' };
     }
+
+    @Delete('delete')
+  @UseGuards(JwtAuthGuard)
+  async deleteUser(@Req() req: Request) {
+    const userId = (req as any).user.id;
+    await this.authService.deleteUser(userId);
+    return { message: 'User deleted successfully' };
+  }
 
 }
